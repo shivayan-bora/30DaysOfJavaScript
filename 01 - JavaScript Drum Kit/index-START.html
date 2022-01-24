@@ -58,7 +58,46 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
 <script>
+  // Select all keys
+  const keys = document.querySelectorAll('.key')
+  // Add Event listener on keydown to the window
+  window.addEventListener('keydown', keyDownEventListener);
 
+  // Key Down event listener
+  function keyDownEventListener(e) {
+    for(let i = 0; i < keys.length; i++){
+      const key = keys[i].children[0]
+      // Identify from the event e, on which key was pressed
+      if(e?.key === key?.textContent?.toLowerCase()) {
+        // If the pressed key matches the element, play the associated sound
+        playSound(keys[i].dataset.key)
+        // If the pressed key matches the element, animate the element
+        keys[i].classList.add('playing');
+        // Remove the animation after 70ms
+        // This might put the transition out of sync
+        setInterval(() => {
+          keys[i].classList.remove('playing');
+        }, 70);
+        break;
+      }
+    }
+  }
+
+  // Function to play sounds
+  function playSound(key) {
+    // Select all the audio elements
+    const audioElements = document.querySelectorAll('audio')
+    for(let i = 0; i < audioElements.length; i++) {
+      // Identify, which key was pressed
+      if(audioElements[i]?.dataset?.key === key) {
+        // If the key matches, play the sound
+        // If it's already playing, rewind it to beginning
+        audioElements[i].currentTime = 0;
+        audioElements[i].play()
+        break;
+      }
+    }
+  }
 </script>
 
 
